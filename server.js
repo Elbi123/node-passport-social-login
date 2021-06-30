@@ -4,7 +4,7 @@ const session = require("express-session");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/user.route");
-
+const messageRoute = require("./routes/message.route");
 const app = express();
 
 require("./middleware/passport.middleware")(passport);
@@ -37,6 +37,12 @@ app.use(passport.session());
 
 // routes goes here
 app.use("/user", userRoute);
+app.use("/messages", messageRoute);
+
+// ERROR HANDLING GOES HERE
+// app.use((err, req, res, next) => {
+//     return res.status(500).json({ error: err.toString() });
+// });
 
 const PORT = 8000;
 app.listen(PORT, () => {
