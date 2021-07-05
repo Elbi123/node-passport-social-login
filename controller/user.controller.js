@@ -82,17 +82,6 @@ exports.login2 = (req, res) => {
     res.send("<a href='/auth/facebook'>login through facebook</a>");
 };
 
-exports.authFacebookLogin = (req, res) => {
-    passport.authenticate("facebook", { scope: "email" });
-};
-
-exports.authFacebookLoginCallback = (req, res) => {
-    passport.authenticate("facebook", {
-        successRedirect: "/user-dashboard",
-        failureRedirect: "/login",
-    });
-};
-
 exports.logout = (req, res) => {
     req.logout();
     res.json({

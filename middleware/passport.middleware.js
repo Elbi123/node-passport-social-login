@@ -1,8 +1,10 @@
 const LocalStrategy = require("passport-local").Strategy;
+import { Strategy } from "passport-facebook";
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-
+const ObjectId = require("mongoose").Types.ObjectId;
 const User = require("./../models/user.model");
+import UserFB from "./../models/userfb.model";
 
 module.exports = (passport) => {
     passport.use(
@@ -35,14 +37,36 @@ module.exports = (passport) => {
             }
         )
     );
+    passport.use(
+        new Strategy(
+            {
+                clientID: "",
+                clientSecret: "",
+                callbackURL: "/auth/facebook/callback",
+                profileFields: ["id", "displayName", "photos", "email"],
+                state: true,
+            },
+            async (accessToken, refressToken, profile, cb) => {
+                console.log(profile);
+                return cb(null, profile);
+            }
+        )
+    );
 
     passport.serializeUser((user, done) => {
+        // if ()
         done(null, user.id);
     });
 
     passport.deserializeUser((id, done) => {
-        User.findById(id, function (err, user) {
-            done(err, user);
-        });
+        if (ObjectId.isValid(id)) {
+            User.findById(id, function (err, user) {
+                done(err, user);
+            });
+        } else {
+            UserFB.find({ id: id }, function (err, user) {
+                done(err, user);
+            });
+        }
     });
 };

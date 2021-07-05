@@ -29,6 +29,8 @@ router.get(
     })
 );
 
+router.get("/logout", userController.logout);
+
 router.post("/login", userController.login);
 
 router.post("/register", userController.createUser);

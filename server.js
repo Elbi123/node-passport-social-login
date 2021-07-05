@@ -10,8 +10,8 @@ import BadRequestError from "./utils/error.util";
 import errorController from "./controller/error.controller";
 const app = express();
 
-// require("./middleware/passport.middleware")(passport);
-require("./middleware/facebook.middleware")(passport);
+require("./middleware/passport.middleware")(passport);
+// require("./middleware/facebook.middleware")(passport);
 
 // mongoose
 
