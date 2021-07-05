@@ -1,5 +1,5 @@
 const Message = require("./../models/message.model");
-import BadRequestError from "./../utils/error.util";
+import catchAsync from "./../utils/catchAsync";
 
 exports.createMessage = async (req, res) => {
     let newMessage;
@@ -19,17 +19,20 @@ exports.createMessage = async (req, res) => {
 };
 
 // 2nd - error handling method
-exports.createAnotherMessage = async (req, res, next) => {
+exports.createAnotherMessage = catchAsync(async (req, res, next) => {
     const newMessage = await Message.create({
         text: req.body.text,
-    }).catch((error) => next(error));
-    return res.send(newMessage);
-};
+    });
+    return res.status(201).json(newMessage);
+});
 
-exports.createStillAnotherMessage = async (req, res, next) => {
+exports.createStillAnotherMessage = catchAsync(async (req, res, next) => {
     const message = await Message.create({
         text: req.body.text,
-    }).catch((error) => next(new BadRequestError(error)));
+    });
 
-    return res.send(message);
-};
+    res.status(201).json({
+        message: "Message is added",
+        body: message,
+    });
+});

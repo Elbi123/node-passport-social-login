@@ -10,7 +10,8 @@ import BadRequestError from "./utils/error.util";
 import errorController from "./controller/error.controller";
 const app = express();
 
-require("./middleware/passport.middleware")(passport);
+// require("./middleware/passport.middleware")(passport);
+require("./middleware/facebook.middleware")(passport);
 
 // mongoose
 
@@ -31,6 +32,7 @@ app.use(passport.session());
 // CUSTOM
 
 // routes goes here
+app.use("/", userRoute);
 app.use("/user", userRoute);
 app.use("/messages", messageRoute);
 
@@ -38,7 +40,7 @@ app.use("/messages", messageRoute);
 app.all("*", (req, res, next) => {
     next(
         new BadRequestError(
-            `Can't find ${req.originalUrl} on this server!!!`,
+            `Can't find ${req.originalUrl} on this server!`,
             404
         )
     );
