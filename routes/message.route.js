@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const messageController = require("./../controller/message.controller");
 
+router.get("/", messageController.getMessages);
 router.post("/", messageController.createMessage);
 router.post("/error2", messageController.createAnotherMessage);
 router.post("/error3", messageController.createStillAnotherMessage);

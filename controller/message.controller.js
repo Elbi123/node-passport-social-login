@@ -1,11 +1,24 @@
 const Message = require("./../models/message.model");
 import catchAsync from "./../utils/catchAsync";
 
+exports.getMessages = async (req, res) => {
+    console.log(req.query);
+    const messages = await Message.find({
+        leg: req.query.leg,
+        // duration: req.query.duration,
+    });
+    res.status(200).json({
+        messages,
+    });
+};
+
 exports.createMessage = async (req, res) => {
     let newMessage;
     try {
         newMessage = Message({
             text: req.body.text,
+            leg: req.body.leg,
+            duration: req.body.duration,
         });
         await newMessage.save();
     } catch (error) {
